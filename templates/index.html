@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Obey Dahlia</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+</head>
+<body>
+  <div id="start-screen">
+    <h1>To become obsessed with Dahlia</h1>
+    <button id="start-button">CLICK</button>
+  </div>
+
+  <div id="spiral-screen" class="hidden">
+    <div class="spiral"></div>
+    <div id="prompt" class="prompt">Type: <strong>I belong to Dahlia</strong></div>
+    <input type="text" id="user-input" autocomplete="off" />
+    <div id="feedback" class="feedback"></div>
+  </div>
+
+  <div id="overlay-text" class="hidden"></div>
+
+  <audio id="audio" src="{{ url_for('static', filename='audio/voice.mp3') }}"></audio>
+
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
