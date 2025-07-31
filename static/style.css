@@ -1,45 +1,59 @@
 body {
   background-color: black;
-  margin: 0;
+  color: #ff00f7;
   font-family: 'Courier New', monospace;
-  color: fuchsia;
-  text-align: center;
   overflow: hidden;
+  margin: 0;
 }
 
-#input-section {
-  margin-top: 20vh;
-}
-
-input {
-  background: black;
-  border: 2px solid fuchsia;
-  color: fuchsia;
-  font-size: 1.5rem;
-  padding: 10px;
+.neon {
+  font-size: 2em;
   text-align: center;
-  outline: none;
+  animation: flicker 1s infinite alternate;
 }
 
-#feedback {
-  margin-top: 20px;
-  font-size: 1.2rem;
-  color: fuchsia;
+@keyframes flicker {
+  0% { opacity: 1; text-shadow: 0 0 10px #ff00f7, 0 0 20px #ff00f7; }
+  100% { opacity: 0.5; text-shadow: none; }
 }
 
-.hypnotic-text {
-  position: absolute;
-  font-size: 2rem;
-  color: fuchsia;
-  animation: blink 0.5s infinite alternate;
+#submission {
+  display: block;
+  margin: 20px auto;
+  padding: 10px;
+  font-size: 1em;
+  text-align: center;
 }
 
-@keyframes blink {
-  from { opacity: 1; }
-  to { opacity: 0.3; }
+#hypnoText {
+  position: fixed;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 2.5em;
+  text-align: center;
+  white-space: nowrap;
+  animation: glow 1s infinite alternate;
 }
 
-@keyframes bgFlash {
-  0% { background-color: black; }
-  100% { background-color: #33001a; }
+@keyframes glow {
+  from { text-shadow: 0 0 10px #ff00f7; }
+  to { text-shadow: 0 0 20px #ff00f7; }
+}
+
+.popup-image {
+  position: fixed;
+  max-width: 30vw;
+  max-height: 30vh;
+  animation: pop 0.5s ease, glowImage 1s infinite alternate;
+}
+
+@keyframes pop {
+  0% { transform: scale(0); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes glowImage {
+  from { filter: drop-shadow(0 0 10px #ff00f7); }
+  to { filter: drop-shadow(0 0 20px #ff00f7); }
 }
