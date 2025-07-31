@@ -1,110 +1,72 @@
 body {
-  margin: 0;
-  background: #000;
-  color: #ff00cc;
-  font-family: 'Arial', sans-serif;
-  overflow: hidden;
-  text-align: center;
-}
-
-#start-screen {
-  position: absolute;
-  top: 0; left: 0; right: 0; bottom: 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  background: #000;
-}
-
-#start-screen h1 {
-  font-size: 2em;
-  color: #ff00cc;
-  text-shadow: 0 0 10px #ff00cc, 0 0 20px #ff00cc;
-}
-
-#start-button {
-  padding: 20px 40px;
-  font-size: 1.5em;
-  margin-top: 20px;
-  cursor: pointer;
-  background: transparent;
-  color: #ff00cc;
-  border: 2px solid #ff00cc;
-  border-radius: 12px;
-  box-shadow: 0 0 15px #ff00cc;
-  transition: all 0.3s ease;
-}
-
-#start-button:hover {
-  background: #ff00cc;
-  color: black;
-  box-shadow: 0 0 30px #ff00cc;
-}
-
-#spiral-screen {
-  position: absolute;
-  top: 0; left: 0; right: 0; bottom: 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
   background: black;
+  color: fuchsia;
+  font-family: 'Orbitron', sans-serif;
+  text-align: center;
+  padding-top: 20vh;
+  transition: background 0.2s;
 }
 
-.spiral {
-  width: 200px;
-  height: 200px;
-  background: url('https://media.giphy.com/media/3o7aD2saalBwwftBIY/giphy.gif') no-repeat center center;
-  background-size: cover;
-  animation: spin 10s linear infinite;
-  margin-bottom: 30px;
-  filter: hue-rotate(300deg) brightness(1.2);
-}
-
-@keyframes spin {
-  from {transform: rotate(0deg);}
-  to {transform: rotate(360deg);}
-}
-
-.prompt {
-  font-size: 1.2em;
-  margin-bottom: 10px;
-  color: #ff00cc;
-  text-shadow: 0 0 10px #ff00cc, 0 0 20px #ff00cc;
-}
-
-#user-input {
+input {
+  background: black;
+  border: 2px solid fuchsia;
+  color: fuchsia;
   padding: 10px;
-  font-size: 1.2em;
-  width: 80%;
-  max-width: 400px;
-  background: black;
-  color: #ff00cc;
-  border: 2px solid #ff00cc;
-  text-align: center;
-  box-shadow: 0 0 10px #ff00cc;
+  font-size: 18px;
 }
 
-.feedback {
-  margin-top: 20px;
-  font-weight: bold;
-  color: #ff00cc;
-  text-shadow: 0 0 10px #ff00cc;
+.alert-mode {
+  animation: flicker 0.2s infinite alternate;
 }
 
-#overlay-text {
-  position: absolute;
+@keyframes flicker {
+  0% { background: black; }
+  100% { background: #ff0033; }
+}
+
+.alert-text {
+  position: fixed;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
-  font-size: 2em;
-  color: #ff00cc;
-  text-shadow: 0 0 10px #ff00cc, 0 0 25px #ff00cc;
-  z-index: 1000;
+  font-size: 2rem;
+  color: white;
+  transform: translate(-50%, -50%) scale(1.5);
+  animation: flashText 0.5s ease-in-out;
+  z-index: 9999;
 }
 
-.hidden {
-  display: none;
+@keyframes flashText {
+  from { opacity: 1; }
+  to { opacity: 0; }
 }
 
+.popup-img {
+  position: fixed;
+  width: 30vw;
+  top: calc(10% + 60 * random());
+  left: calc(10% + 80 * random());
+  animation: pop 0.8s ease-in-out;
+  z-index: 999;
+}
+
+@keyframes pop {
+  from { opacity: 0; transform: scale(0.8); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.final-message {
+  color: fuchsia;
+  font-size: 2.5rem;
+  padding-top: 20vh;
+}
+
+.tribute-button {
+  background: black;
+  border: 2px solid fuchsia;
+  color: fuchsia;
+  padding: 10px 20px;
+  font-size: 1.5rem;
+  margin-top: 20px;
+  display: inline-block;
+  text-decoration: none;
+}
