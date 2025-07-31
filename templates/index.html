@@ -1,17 +1,133 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Dahlia Domination</title>
-  <link rel="stylesheet" href="/static/style.css" />
+  <meta charset="UTF-8">
+  <title>Dahlia Control</title>
+  <style>
+    body {
+      background-color: black;
+      color: fuchsia;
+      font-family: 'Arial Black', sans-serif;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    #inputPrompt {
+      font-size: 1.5em;
+      margin-top: 100px;
+    }
+
+    #phraseInput {
+      padding: 10px;
+      font-size: 1.2em;
+      background: black;
+      color: fuchsia;
+      border: 2px solid fuchsia;
+    }
+
+    .popup-img {
+      position: fixed;
+      max-width: 200px;
+      max-height: 200px;
+      animation: flash 1s ease-in-out, float 3s infinite alternate ease-in-out;
+    }
+
+    @keyframes flash {
+      0% { opacity: 0; transform: scale(0.5) rotate(0deg); }
+      50% { opacity: 1; transform: scale(1.2) rotate(20deg); }
+      100% { opacity: 1; transform: scale(1) rotate(0deg); }
+    }
+
+    @keyframes float {
+      from { transform: translateY(0); }
+      to { transform: translateY(-20px); }
+    }
+
+    .hypno-text {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 2em;
+      color: fuchsia;
+      text-shadow: 0 0 20px fuchsia;
+      animation: flicker 0.8s infinite;
+    }
+
+    @keyframes flicker {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+  </style>
 </head>
 <body>
-  <div id="input-section">
-    <input type="text" id="submission" placeholder="Type your truth..." autofocus />
-    <p id="feedback"></p>
-  </div>
-  <audio id="audio" src="/static/audio/tuo_audio.mp3"></audio>
-  <script src="/static/script.js"></script>
+
+  <div id="inputPrompt">Type the phrase exactly: <br><strong>"I belong to Dahlia"</strong></div>
+  <input type="text" id="phraseInput" placeholder="Type here...">
+
+  <script>
+    const input = document.getElementById('phraseInput');
+
+    input.addEventListener('keypress', function (e) {
+      if (e.key === 'Enter') {
+        if (input.value.trim().toLowerCase() === 'i belong to dahlia') {
+          startObsession();
+        } else {
+          alert("Incorrect phrase. Try again exactly.");
+        }
+      }
+    });
+
+    function startObsession() {
+      input.style.display = 'none';
+      document.getElementById('inputPrompt').style.display = 'none';
+
+      // Audio
+      const audio = new Audio('/static/audio/start.mp3');
+      audio.play();
+
+      // Hypnotic text spam
+      const phrases = [
+        "You are mine now.",
+        "Obey Dahlia.",
+        "No thoughts, just worship.",
+        "Dahlia owns you.",
+        "You belong. Forever.",
+        "Down, deeper, addicted.",
+      ];
+
+      function showPhrase() {
+        const phrase = document.createElement('div');
+        phrase.className = 'hypno-text';
+        phrase.textContent = phrases[Math.floor(Math.random() * phrases.length)];
+        document.body.appendChild(phrase);
+        setTimeout(() => phrase.remove(), 2000);
+      }
+
+      // Image popup spam
+      function showImage() {
+        fetch('/images')
+          .then(res => res.json())
+          .then(images => {
+            const img = document.createElement('img');
+            img.src = `/static/images/${images[Math.floor(Math.random() * images.length)]}`;
+            img.className = 'popup-img';
+            img.style.top = `${Math.random() * 80 + 10}%`;
+            img.style.left = `${Math.random() * 80 + 10}%`;
+            document.body.appendChild(img);
+            setTimeout(() => img.remove(), 3000);
+          });
+      }
+
+      // Loop effects
+      setInterval(showPhrase, 1200);
+      setInterval(showImage, 1000);
+
+      // Auto open Throne after 90 sec
+      setTimeout(() => {
+        window.open("https://throne.com/dahliastar", "_blank");
+      }, 90000);
+    }
+  </script>
 </body>
 </html>
