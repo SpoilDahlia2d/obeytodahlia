@@ -1,62 +1,64 @@
-const input = document.getElementById("commandInput");
+const input = document.getElementById("submission");
 const feedback = document.getElementById("feedback");
+const audio = document.getElementById("audio");
 
 let imageList = [];
-let index = 0;
-let showing = false;
+let showInterval;
 
 fetch("/images")
-  .then(response => response.json())
-  .then(data => imageList = data);
+  .then((res) => res.json())
+  .then((data) => {
+    imageList = data;
+  });
 
-input.addEventListener("keypress", function (e) {
+input.addEventListener("keydown", (e) => {
   if (e.key === "Enter") {
     const value = input.value.toLowerCase().trim();
     if (value === "i belong to dahlia") {
-      feedback.textContent = "⚠️ MIND LINK ESTABLISHED.";
       input.disabled = true;
-      startMindCrash();
+      feedback.textContent = "Obedience unlocked.";
+      document.body.style.animation = "bgFlash 0.3s infinite alternate";
+      audio.play();
+      navigator.vibrate?.([200, 100, 200, 100]);
+
+      setInterval(showImage, 300);
+      setInterval(showText, 800);
     } else {
-      feedback.textContent = "Wrong. Try again.";
+      feedback.textContent = "Try again. Say it properly.";
     }
   }
 });
 
-function startMindCrash() {
-  document.body.classList.add("alert-mode");
-  navigator.vibrate([200, 100, 200, 100, 300]);
+function showImage() {
+  if (imageList.length === 0) return;
 
-  // Loop audio (aggiungilo tu in HTML)
-  const audio = document.getElementById("audio");
-  if (audio) audio.play();
+  const img = document.createElement("img");
+  img.src = "/static/images/" + imageList[Math.floor(Math.random() * imageList.length)];
+  img.style.position = "absolute";
+  img.style.left = Math.random() * window.innerWidth + "px";
+  img.style.top = Math.random() * window.innerHeight + "px";
+  img.style.maxWidth = "200px";
+  img.style.zIndex = 999;
+  document.body.appendChild(img);
 
-  setInterval(() => {
-    const text = document.createElement("div");
-    text.textContent = randomPhrase();
-    text.className = "alert-text";
-    document.body.appendChild(text);
-    setTimeout(() => text.remove(), 1000);
-  }, 300);
-
-  setInterval(() => {
-    const img = document.createElement("img");
-    img.src = "/static/images/" + imageList[Math.floor(Math.random() * imageList.length)];
-    img.className = "popup-img";
-    document.body.appendChild(img);
-    setTimeout(() => img.remove(), 800);
-  }, 400);
-
-  // Finale dopo 10s
-  setTimeout(() => {
-    document.body.innerHTML = `
-      <div class="final-message">Session complete.<br>You belong to Dahlia.<br><a href="https://throne.com/dahliastar" class="tribute-button">TRIBUTE NOW</a></div>
-    `;
-  }, 10000);
+  setTimeout(() => img.remove(), 4000);
 }
 
-function randomPhrase() {
-  const phrases = ["OBEY", "DAHLIA OWNS YOU", "SURRENDER", "MIND ERASED", "TRIBUTE NOW"];
-  return phrases[Math.floor(Math.random() * phrases.length)];
+const phrases = [
+  "Obey. Submit. Serve.",
+  "You are mine now.",
+  "Think only of Dahlia.",
+  "No escape. No thoughts.",
+  "Worship. Tribute. Repeat.",
+];
+
+function showText() {
+  const p = document.createElement("div");
+  p.classList.add("hypnotic-text");
+  p.textContent = phrases[Math.floor(Math.random() * phrases.length)];
+  p.style.left = Math.random() * window.innerWidth + "px";
+  p.style.top = Math.random() * window.innerHeight + "px";
+  document.body.appendChild(p);
+
+  setTimeout(() => p.remove(), 4000);
 }
-
-
