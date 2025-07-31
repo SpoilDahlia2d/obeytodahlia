@@ -1,59 +1,63 @@
 body {
-  background-color: black;
-  color: #ff00f7;
-  font-family: 'Courier New', monospace;
-  overflow: hidden;
-  margin: 0;
+    margin: 0;
+    background: black;
+    overflow: hidden;
+    font-family: Arial, sans-serif;
 }
 
-.neon {
-  font-size: 2em;
-  text-align: center;
-  animation: flicker 1s infinite alternate;
+#start-screen {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    color: fuchsia;
+    text-align: center;
 }
 
-@keyframes flicker {
-  0% { opacity: 1; text-shadow: 0 0 10px #ff00f7, 0 0 20px #ff00f7; }
-  100% { opacity: 0.5; text-shadow: none; }
+.neon-text {
+    font-size: 2rem;
+    color: fuchsia;
+    text-shadow: 0 0 10px fuchsia, 0 0 20px fuchsia;
 }
 
-#submission {
-  display: block;
-  margin: 20px auto;
-  padding: 10px;
-  font-size: 1em;
-  text-align: center;
+input, button {
+    margin-top: 20px;
+    padding: 10px;
+    font-size: 1.2rem;
+    border: none;
+    border-radius: 10px;
 }
 
-#hypnoText {
-  position: fixed;
-  top: 30%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  font-size: 2.5em;
-  text-align: center;
-  white-space: nowrap;
-  animation: glow 1s infinite alternate;
+#effect-screen {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    animation: bgFlash 1s infinite alternate;
 }
 
-@keyframes glow {
-  from { text-shadow: 0 0 10px #ff00f7; }
-  to { text-shadow: 0 0 20px #ff00f7; }
+@keyframes bgFlash {
+    from { background-color: black; }
+    to { background-color: #2a002a; }
 }
 
-.popup-image {
-  position: fixed;
-  max-width: 30vw;
-  max-height: 30vh;
-  animation: pop 0.5s ease, glowImage 1s infinite alternate;
+img.popup {
+    position: absolute;
+    width: 200px;
+    animation: popupAnim 1s ease;
 }
 
-@keyframes pop {
-  0% { transform: scale(0); opacity: 0; }
-  100% { transform: scale(1); opacity: 1; }
+@keyframes popupAnim {
+    0% { transform: scale(0.2) rotate(0deg); opacity: 0; }
+    100% { transform: scale(1.2) rotate(15deg); opacity: 1; }
 }
 
-@keyframes glowImage {
-  from { filter: drop-shadow(0 0 10px #ff00f7); }
-  to { filter: drop-shadow(0 0 20px #ff00f7); }
+#text-container {
+    position: absolute;
+    top: 50%;
+    width: 100%;
+    text-align: center;
+    font-size: 2rem;
+    color: fuchsia;
+    text-shadow: 0 0 10px fuchsia;
 }
