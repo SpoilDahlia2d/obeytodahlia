@@ -1,69 +1,51 @@
-const phrases = [
-  "Obey me.",
-  "You're mine now.",
-  "Deeper into Dahlia.",
-  "No escape.",
-  "Surrender completely.",
-  "Worship without thought."
-];
-
-let started = false;
-
-function checkPhrase() {
-  const input = document.getElementById("submission").value.trim().toLowerCase();
-  if (input === "i belong to dahlia") {
-    document.getElementById("intro").style.display = "none";
-    document.getElementById("effects").style.display = "block";
-    startEffects();
-  }
-}
+document.getElementById("confirm").addEventListener("click", () => {
+    const value = document.getElementById("submission").value.trim();
+    if (value.toLowerCase() === "i belong to dahlia") {
+        startEffects();
+    }
+});
 
 function startEffects() {
-  if (started) return;
-  started = true;
+    document.getElementById("start-screen").style.display = "none";
+    document.getElementById("effect-screen").style.display = "block";
 
-  // audio
-  const audio = document.getElementById("hypnoAudio");
-  audio.play().catch(() => console.warn("Audio autoplay blocked."));
+    const audio = document.getElementById("audio");
+    audio.play().catch(() => console.log("Audio blocked"));
 
-  // background flashing
-  document.body.style.animation = "flashBg 0.5s infinite alternate";
-  const style = document.createElement("style");
-  style.innerHTML = `@keyframes flashBg {
-    0% { background-color: black; }
-    100% { background-color: #1f001f; }
-  }`;
-  document.head.appendChild(style);
+    // Fetch and show images
+    fetch("/images")
+        .then(res => res.json())
+        .then(data => {
+            data.images.forEach((filename, i) => {
+                setTimeout(() => {
+                    const img = document.createElement("img");
+                    img.src = `/images/${filename}`;
+                    img.className = "popup";
+                    img.style.top = Math.random() * 80 + "vh";
+                    img.style.left = Math.random() * 80 + "vw";
+                    document.body.appendChild(img);
+                    setTimeout(() => img.remove(), 3000);
+                }, i * 600);
+            });
+        });
 
-  // show phrases
-  setInterval(() => {
-    const phrase = phrases[Math.floor(Math.random() * phrases.length)];
-    const textDiv = document.getElementById("hypnoText");
-    textDiv.textContent = phrase;
-  }, 2000);
+    // Show phrases
+    const phrases = [
+        "Obey Dahlia",
+        "You are mine",
+        "No escape",
+        "You crave submission",
+        "Total control"
+    ];
+    let idx = 0;
+    const textContainer = document.getElementById("text-container");
+    setInterval(() => {
+        textContainer.innerText = phrases[idx % phrases.length];
+        idx++;
+    }, 1500);
 
-  // load images
-  fetch('/images').then(res => res.json()).then(data => {
-    showImagesLoop(data.images);
-  });
-
-  // open throne link after 90 sec
-  setTimeout(() => {
-    window.open("https://throne.com/dahliastar", "_blank");
-  }, 90000);
+    // Open Throne after 90 sec
+    setTimeout(() => {
+        window.open("https://throne.com/dahliastar", "_blank");
+    }, 90000);
 }
-
-function showImagesLoop(images) {
-  let i = 0;
-  setInterval(() => {
-    const img = document.createElement("img");
-    img.src = `/static/images/${images[i % images.length]}`;
-    img.className = "popup-image";
-    img.style.top = `${Math.random() * 80 + 10}%`;
-    img.style.left = `${Math.random() * 80 + 10}%`;
-    document.body.appendChild(img);
-    setTimeout(() => img.remove(), 5000);
-    i++;
-  }, 1500);
-}
-
