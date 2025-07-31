@@ -1,0 +1,110 @@
+body {
+  margin: 0;
+  background: #000;
+  color: #ff00cc;
+  font-family: 'Arial', sans-serif;
+  overflow: hidden;
+  text-align: center;
+}
+
+#start-screen {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: #000;
+}
+
+#start-screen h1 {
+  font-size: 2em;
+  color: #ff00cc;
+  text-shadow: 0 0 10px #ff00cc, 0 0 20px #ff00cc;
+}
+
+#start-button {
+  padding: 20px 40px;
+  font-size: 1.5em;
+  margin-top: 20px;
+  cursor: pointer;
+  background: transparent;
+  color: #ff00cc;
+  border: 2px solid #ff00cc;
+  border-radius: 12px;
+  box-shadow: 0 0 15px #ff00cc;
+  transition: all 0.3s ease;
+}
+
+#start-button:hover {
+  background: #ff00cc;
+  color: black;
+  box-shadow: 0 0 30px #ff00cc;
+}
+
+#spiral-screen {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: black;
+}
+
+.spiral {
+  width: 200px;
+  height: 200px;
+  background: url('https://media.giphy.com/media/3o7aD2saalBwwftBIY/giphy.gif') no-repeat center center;
+  background-size: cover;
+  animation: spin 10s linear infinite;
+  margin-bottom: 30px;
+  filter: hue-rotate(300deg) brightness(1.2);
+}
+
+@keyframes spin {
+  from {transform: rotate(0deg);}
+  to {transform: rotate(360deg);}
+}
+
+.prompt {
+  font-size: 1.2em;
+  margin-bottom: 10px;
+  color: #ff00cc;
+  text-shadow: 0 0 10px #ff00cc, 0 0 20px #ff00cc;
+}
+
+#user-input {
+  padding: 10px;
+  font-size: 1.2em;
+  width: 80%;
+  max-width: 400px;
+  background: black;
+  color: #ff00cc;
+  border: 2px solid #ff00cc;
+  text-align: center;
+  box-shadow: 0 0 10px #ff00cc;
+}
+
+.feedback {
+  margin-top: 20px;
+  font-weight: bold;
+  color: #ff00cc;
+  text-shadow: 0 0 10px #ff00cc;
+}
+
+#overlay-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 2em;
+  color: #ff00cc;
+  text-shadow: 0 0 10px #ff00cc, 0 0 25px #ff00cc;
+  z-index: 1000;
+}
+
+.hidden {
+  display: none;
+}
+
