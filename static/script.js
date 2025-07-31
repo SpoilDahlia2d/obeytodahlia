@@ -1,93 +1,62 @@
-const startBtn = document.getElementById("start-button");
-const startScreen = document.getElementById("start-screen");
-const spiralScreen = document.getElementById("spiral-screen");
-const input = document.getElementById("user-input");
-const prompt = document.getElementById("prompt");
+const input = document.getElementById("commandInput");
 const feedback = document.getElementById("feedback");
-const audio = document.getElementById("audio");
-const overlayText = document.getElementById("overlay-text");
 
 let imageList = [];
+let index = 0;
+let showing = false;
 
-startBtn.onclick = () => {
-  startScreen.classList.add("hidden");
-  spiralScreen.classList.remove("hidden");
-  audio.play();
-  vibrate();
-  fetchImages();
-};
+fetch("/images")
+  .then(response => response.json())
+  .then(data => imageList = data);
 
-input.addEventListener("keydown", function (e) {
+input.addEventListener("keypress", function (e) {
   if (e.key === "Enter") {
-    const value = input.value.trim().toLowerCase();
+    const value = input.value.toLowerCase().trim();
     if (value === "i belong to dahlia") {
-      feedback.textContent = "Good boy. Obedience is bliss.";
-      input.value = "";
-      startShowLoop();
+      feedback.textContent = "⚠️ MIND LINK ESTABLISHED.";
+      input.disabled = true;
+      startMindCrash();
     } else {
       feedback.textContent = "Wrong. Try again.";
     }
   }
 });
 
-function fetchImages() {
-  fetch('/images')
-    .then(res => res.json())
-    .then(images => {
-      imageList = images;
-    });
-}
+function startMindCrash() {
+  document.body.classList.add("alert-mode");
+  navigator.vibrate([200, 100, 200, 100, 300]);
 
-function startShowLoop() {
+  // Loop audio (aggiungilo tu in HTML)
+  const audio = document.getElementById("audio");
+  if (audio) audio.play();
+
   setInterval(() => {
-    showText(randomPhrase());
-    showImage();
-    vibrate();
-  }, 3000);
-}
+    const text = document.createElement("div");
+    text.textContent = randomPhrase();
+    text.className = "alert-text";
+    document.body.appendChild(text);
+    setTimeout(() => text.remove(), 1000);
+  }, 300);
 
-const phrases = [
-  "Obey Dahlia.",
-  "You are hers now.",
-  "Submission is pleasure.",
-  "Let go and serve.",
-  "You belong to Dahlia.",
-  "No thoughts. Only devotion.",
-  "Keep typing, good boy."
-];
+  setInterval(() => {
+    const img = document.createElement("img");
+    img.src = "/static/images/" + imageList[Math.floor(Math.random() * imageList.length)];
+    img.className = "popup-img";
+    document.body.appendChild(img);
+    setTimeout(() => img.remove(), 800);
+  }, 400);
 
-function showText(text) {
-  overlayText.textContent = text;
-  overlayText.classList.remove("hidden");
+  // Finale dopo 10s
   setTimeout(() => {
-    overlayText.classList.add("hidden");
-  }, 2000);
+    document.body.innerHTML = `
+      <div class="final-message">Session complete.<br>You belong to Dahlia.<br><a href="https://throne.com/dahliastar" class="tribute-button">TRIBUTE NOW</a></div>
+    `;
+  }, 10000);
 }
 
 function randomPhrase() {
+  const phrases = ["OBEY", "DAHLIA OWNS YOU", "SURRENDER", "MIND ERASED", "TRIBUTE NOW"];
   return phrases[Math.floor(Math.random() * phrases.length)];
 }
 
-function showImage() {
-  if (imageList.length === 0) return;
-  const img = document.createElement("img");
-  const folder = "static/images/";
-  const index = Math.floor(Math.random() * imageList.length);
-  img.src = folder + imageList[index];
-  img.style.position = "absolute";
-  img.style.top = Math.random() * 80 + "%";
-  img.style.left = Math.random() * 80 + "%";
-  img.style.width = "150px";
-  img.style.zIndex = 999;
-  img.style.opacity = 0.9;
-  img.style.borderRadius = "15px";
-  document.body.appendChild(img);
-  setTimeout(() => img.remove(), 2000);
-}
-
-function vibrate() {
-  if (navigator.vibrate) {
-    navigator.vibrate(100);
-  }
-}
 
