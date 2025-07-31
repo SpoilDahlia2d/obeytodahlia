@@ -1,20 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Dahlia Domination</title>
-  <link rel="stylesheet" href="/static/style.css">
+    <meta charset="UTF-8">
+    <title>Dahlia Control</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-  <div id="intro">
-    <p class="neon">Type: <strong>I belong to Dahlia</strong></p>
-    <input type="text" id="submission" placeholder="Enter the phrase...">
-    <button onclick="checkPhrase()">Submit</button>
-  </div>
-  <div id="effects" style="display:none;">
-    <audio id="hypnoAudio" src="/static/audio.mp3"></audio>
-    <div id="hypnoText"></div>
-  </div>
-  <script src="/static/main.js"></script>
+    <div id="start-screen">
+        <p class="neon-text">Type exactly:</p>
+        <p class="neon-text">I belong to Dahlia</p>
+        <input type="text" id="submission" placeholder="Write it here">
+        <button id="confirm">SUBMIT</button>
+    </div>
+
+    <div id="effect-screen" style="display: none;">
+        <div id="text-container"></div>
+        <audio id="audio" src="{{ url_for('static', filename='audio/brainwash.mp3') }}"></audio>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 </html>
