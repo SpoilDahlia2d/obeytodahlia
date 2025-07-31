@@ -1,72 +1,45 @@
 body {
-  background: black;
+  background-color: black;
+  margin: 0;
+  font-family: 'Courier New', monospace;
   color: fuchsia;
-  font-family: 'Orbitron', sans-serif;
   text-align: center;
-  padding-top: 20vh;
-  transition: background 0.2s;
+  overflow: hidden;
+}
+
+#input-section {
+  margin-top: 20vh;
 }
 
 input {
   background: black;
   border: 2px solid fuchsia;
   color: fuchsia;
-  padding: 10px;
-  font-size: 18px;
-}
-
-.alert-mode {
-  animation: flicker 0.2s infinite alternate;
-}
-
-@keyframes flicker {
-  0% { background: black; }
-  100% { background: #ff0033; }
-}
-
-.alert-text {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  font-size: 2rem;
-  color: white;
-  transform: translate(-50%, -50%) scale(1.5);
-  animation: flashText 0.5s ease-in-out;
-  z-index: 9999;
-}
-
-@keyframes flashText {
-  from { opacity: 1; }
-  to { opacity: 0; }
-}
-
-.popup-img {
-  position: fixed;
-  width: 30vw;
-  top: calc(10% + 60 * random());
-  left: calc(10% + 80 * random());
-  animation: pop 0.8s ease-in-out;
-  z-index: 999;
-}
-
-@keyframes pop {
-  from { opacity: 0; transform: scale(0.8); }
-  to { opacity: 1; transform: scale(1); }
-}
-
-.final-message {
-  color: fuchsia;
-  font-size: 2.5rem;
-  padding-top: 20vh;
-}
-
-.tribute-button {
-  background: black;
-  border: 2px solid fuchsia;
-  color: fuchsia;
-  padding: 10px 20px;
   font-size: 1.5rem;
+  padding: 10px;
+  text-align: center;
+  outline: none;
+}
+
+#feedback {
   margin-top: 20px;
-  display: inline-block;
-  text-decoration: none;
+  font-size: 1.2rem;
+  color: fuchsia;
+}
+
+.hypnotic-text {
+  position: absolute;
+  font-size: 2rem;
+  color: fuchsia;
+  animation: blink 0.5s infinite alternate;
+}
+
+@keyframes blink {
+  from { opacity: 1; }
+  to { opacity: 0.3; }
+}
+
+@keyframes bgFlash {
+  0% { background-color: black; }
+  100% { background-color: #33001a; }
 }
