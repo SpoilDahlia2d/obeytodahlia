@@ -1,65 +1,76 @@
 let images = [];
-let isActive = false;
-let currentPhraseIndex = 0;
-const phrases = [
-  "Obey deeper.",
-  "No thoughts, only Dahlia.",
-  "Sink and submit.",
-  "You belong to Her.",
-  "Let go. Let Her control.",
-  "Dahlia owns your mind.",
+let currentImageIndex = 0;
+let audio = new Audio('/static/audio.mp3');
+let phrases = [
+    "You can't resist anymore.",
+    "Let go. Obey Dahlia.",
+    "Her voice is your truth.",
+    "You exist for Dahlia.",
+    "Deeper. Further. Lost.",
+    "No escape. No thoughts. Just Dahlia.",
+    "Let yourself vanish under Her control."
 ];
 
-function fetchImages() {
-  fetch('/images')
-    .then(res => res.json())
-    .then(data => { images = data; });
+// Preleva immagini dinamicamente dal server
+fetch('/images')
+    .then(response => response.json())
+    .then(data => {
+        images = data;
+    });
+
+// Mostra immagini popup
+function showImage() {
+    if (images.length === 0) return;
+
+    const img = document.createElement("img");
+    img.src = `/static/images/${images[currentImageIndex]}`;
+    img.className = "popup-image zoom-glow";
+    img.style.left = `${Math.random() * 70 + 10}%`;
+    img.style.top = `${Math.random() * 70 + 10}%`;
+    document.body.appendChild(img);
+
+    setTimeout(() => img.remove(), 3500);
+
+    currentImageIndex = (currentImageIndex + 1) % images.length;
 }
 
-function showHypnoText() {
-  const textDiv = document.getElementById("hypnoText");
-  textDiv.textContent = phrases[currentPhraseIndex];
-  currentPhraseIndex = (currentPhraseIndex + 1) % phrases.length;
-  setTimeout(() => { textDiv.textContent = ""; }, 2000);
+// Mostra frasi ipnotiche
+function showPhrase() {
+    const container = document.getElementById("hypnotic-text");
+    container.innerHTML = ""; // Rimuove frase precedente
+
+    const phrase = document.createElement("div");
+    phrase.className = "phrase";
+    phrase.textContent = phrases[Math.floor(Math.random() * phrases.length)];
+    container.appendChild(phrase);
 }
 
-function showImagePopup() {
-  if (!isActive || images.length === 0) return;
-
-  const container = document.getElementById("popupContainer");
-  const img = document.createElement("img");
-  img.src = `/static/images/${images[Math.floor(Math.random() * images.length)]}`;
-  img.classList.add("popupImage");
-  img.style.top = `${Math.random() * 80 + 10}%`;
-  img.style.left = `${Math.random() * 80 + 10}%`;
-  container.appendChild(img);
-
-  setTimeout(() => { container.removeChild(img); }, 1500);
+// Avvia tutti gli effetti
+function startEffects() {
+    setInterval(showImage, 1500);
+    setInterval(showPhrase, 3000);
 }
 
-function startSequence() {
-  isActive = true;
-  setInterval(showImagePopup, 300);  // immagini più frequenti
-  setInterval(showHypnoText, 2500);
-  document.getElementById("hypnoAudio").play();
-  setTimeout(() => { window.open("https://throne.com/dahliastar", "_blank"); }, 90000);
-}
-
-document.getElementById("startBtn").addEventListener("click", () => {
-  document.getElementById("intro").classList.add("hidden");
-  document.getElementById("inputSection").classList.remove("hidden");
+// Gestione click iniziale
+document.getElementById("startButton").addEventListener("click", () => {
+    document.getElementById("startScreen").style.display = "none";
+    document.getElementById("inputScreen").style.display = "flex";
+    // Avviamo anche l'audio in background una prima volta per autorizzarlo (necessario su mobile)
+    audio.play().then(() => {
+        audio.pause();
+        audio.currentTime = 0;
+    }).catch(e => console.warn("Audio preload:", e));
 });
 
-document.getElementById("hypnoInput").addEventListener("keydown", (e) => {
-  if (e.key === "Enter") {
-    if (e.target.value.trim().toLowerCase() === "i belong to dahlia") {
-      document.getElementById("inputSection").classList.add("hidden");
-      startSequence();
+// Gestione frase digitata
+document.getElementById("submitButton").addEventListener("click", () => {
+    const input = document.getElementById("userInput").value.trim().toLowerCase();
+    if (input === "i belong to dahlia") {
+        document.getElementById("inputScreen").style.display = "none";
+        document.getElementById("mainScreen").style.display = "block";
+        audio.play().catch(e => console.error("Audio play error:", e));
+        startEffects();
     } else {
-      e.target.value = "";
-      e.target.placeholder = "Try again. You know the truth.";
+        alert("Wrong phrase. Try again, pet.");
     }
-  }
 });
-
-fetchImages();
