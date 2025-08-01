@@ -1,58 +1,76 @@
 body {
+  margin: 0;
   background-color: black;
   overflow: hidden;
-  margin: 0;
-  font-family: monospace;
+  font-family: 'Arial', sans-serif;
+  color: #f0f;
 }
 
-#overlay {
-  position: absolute;
-  top: 40%;
-  width: 100%;
-  text-align: center;
-  z-index: 10;
+.hidden {
+  display: none;
 }
 
-input, button {
+#intro-screen {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   background: black;
-  border: 2px solid fuchsia;
-  color: fuchsia;
-  padding: 10px 20px;
-  font-size: 20px;
+  color: #f0f;
+  font-size: 1.5em;
   text-align: center;
-  box-shadow: 0 0 10px fuchsia;
-  outline: none;
+  padding: 20px;
 }
 
-#phrases {
+#start-btn {
+  margin-top: 20px;
+  padding: 15px 30px;
+  font-size: 1.5em;
+  color: #f0f;
+  background: transparent;
+  border: 2px solid #f0f;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+#start-btn:hover {
+  background: #f0f;
+  color: black;
+}
+
+#text-container {
   position: absolute;
-  top: 10%;
-  width: 100%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   text-align: center;
-  color: fuchsia;
-  font-size: 28px;
-  font-weight: bold;
-  animation: pulse 1s infinite alternate;
-  z-index: 5;
 }
 
-img.popup {
-  position: absolute;
-  max-width: 30vw;
-  max-height: 30vh;
-  animation: pop 0.5s ease, spin 4s linear infinite;
+.hypno-text {
+  font-size: 2em;
+  color: #f0f;
+  text-shadow: 0 0 15px #f0f;
+  animation: flicker 0.3s alternate infinite;
 }
 
-@keyframes pulse {
-  0% { opacity: 0.3; }
+@keyframes flicker {
+  0% { opacity: 0.7; }
   100% { opacity: 1; }
 }
 
-@keyframes pop {
-  from { transform: scale(0); }
-  to { transform: scale(1); }
+.popup-img {
+  position: absolute;
+  top: calc(10% + 80px);
+  left: 10%;
+  max-width: 80vw;
+  max-height: 80vh;
+  opacity: 0.95;
+  box-shadow: 0 0 30px #f0f;
+  animation: flash 0.2s ease;
 }
 
-@keyframes spin {
-  100% { transform: rotate(360deg); }
+@keyframes flash {
+  0% { transform: scale(1.2); opacity: 1; }
+  100% { transform: scale(1); opacity: 0.95; }
 }
