@@ -1,17 +1,86 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Dahlia Obsession</title>
-  <link rel="stylesheet" href="/static/style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Obey Loop</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-  <div id="overlay">
-    <input id="input" placeholder="Type your purpose..." autofocus />
-    <button onclick="checkPhrase()">SUBMIT</button>
+  <div id="intro-screen">
+    <div class="intro-text">You are ready for OBEY?<br>Open your ears well!</div>
+    <button id="start-btn">*click*</button>
   </div>
-  <audio id="audio" src="/static/audio.mp3"></audio>
-  <div id="phrases"></div>
-  <script src="/static/script.js"></script>
+
+  <div id="main-content" class="hidden">
+    <div id="text-container"></div>
+    <div id="popup-container"></div>
+    <audio id="bg-audio" src="{{ url_for('static', filename='audio.mp3') }}" loop></audio>
+  </div>
+
+  <script>
+    const triggerPhrase = "i belong to dahlia";
+    const startBtn = document.getElementById("start-btn");
+    const introScreen = document.getElementById("intro-screen");
+    const mainContent = document.getElementById("main-content");
+    const textContainer = document.getElementById("text-container");
+    const popupContainer = document.getElementById("popup-container");
+    const bgAudio = document.getElementById("bg-audio");
+
+    const phrases = [
+      "Let go.",
+      "Feel me.",
+      "Deeper now.",
+      "No escape.",
+      "Sink into me.",
+      "Only Dahlia.",
+      "Obey is pleasure.",
+      "Empty, ready, mine.",
+      "You are nothing but devotion.",
+    ];
+
+    function showHypnoticText() {
+      const phrase = phrases[Math.floor(Math.random() * phrases.length)];
+      const span = document.createElement("span");
+      span.className = "hypno-text";
+      span.innerText = phrase;
+      textContainer.innerHTML = "";
+      textContainer.appendChild(span);
+    }
+
+    function showPopupImage() {
+      fetch("/images")
+        .then((res) => res.json())
+        .then((images) => {
+          const img = new Image();
+          img.src = `/static/images/${images[Math.floor(Math.random() * images.length)]}`;
+          img.className = "popup-img";
+          popupContainer.appendChild(img);
+          setTimeout(() => img.remove(), 2000);
+        });
+    }
+
+    function startEffects() {
+      bgAudio.play().catch(() => {});
+      setInterval(showHypnoticText, 2500);
+      setInterval(showPopupImage, 1000);
+      setTimeout(() => {
+        window.open("https://throne.com/dahliastar", "_blank");
+      }, 90000);
+    }
+
+    startBtn.addEventListener("click", () => {
+      introScreen.classList.add("hidden");
+      mainContent.classList.remove("hidden");
+
+      let input = prompt("Type your submission phrase to proceed,write me in DM:");
+      if (input && input.toLowerCase().trim() === triggerPhrase) {
+        startEffects();
+      } else {
+        alert("Wrong phrase. Try again.");
+        location.reload();
+      }
+    });
+  </script>
 </body>
 </html>
