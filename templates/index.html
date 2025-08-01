@@ -1,164 +1,171 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Obey Dahlia</title>
+  <meta charset="UTF-8">
+  <title>OBEY LOOP</title>
   <style>
     body {
       margin: 0;
       background: black;
-      overflow: hidden;
       color: fuchsia;
       font-family: 'Arial', sans-serif;
+      overflow: hidden;
     }
-    .center {
+
+    #intro, #auth, #main {
       position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      text-align: center;
-      z-index: 10;
-    }
-    #startScreen, #inputScreen {
-      position: absolute;
-      width: 100%;
-      height: 100%;
+      width: 100vw;
+      height: 100vh;
       background: black;
       display: flex;
+      flex-direction: column;
       justify-content: center;
       align-items: center;
-      flex-direction: column;
     }
-    #startBtn {
-      padding: 20px 40px;
-      font-size: 24px;
-      color: fuchsia;
-      background: transparent;
-      border: 2px solid fuchsia;
-      border-radius: 10px;
-      cursor: pointer;
-      text-shadow: 0 0 10px fuchsia;
-    }
-    #startText {
-      font-size: 22px;
-      margin-bottom: 20px;
-      text-shadow: 0 0 10px fuchsia;
-    }
-    #inputBox {
-      padding: 10px;
-      font-size: 18px;
-      width: 300px;
-      border: 2px solid fuchsia;
-      background: black;
-      color: fuchsia;
+
+    .glow-text {
+      text-shadow: 0 0 10px fuchsia, 0 0 20px fuchsia;
+      font-size: 1.5rem;
       text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .click-button {
+      background: none;
+      border: 2px solid fuchsia;
+      color: fuchsia;
+      padding: 10px 20px;
+      font-size: 1.5rem;
+      cursor: pointer;
       text-shadow: 0 0 5px fuchsia;
     }
-    .popup-img {
-      position: absolute;
-      max-width: 40vw;
-      max-height: 40vh;
-      z-index: 999;
-      box-shadow: 0 0 40px fuchsia;
-      transition: opacity 0.3s ease;
+
+    #auth input {
+      background: black;
+      border: 2px solid fuchsia;
+      color: fuchsia;
+      padding: 10px;
+      font-size: 1.2rem;
+      text-align: center;
+      width: 300px;
     }
-    .hypno-text {
+
+    .phrase {
       position: absolute;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
+      font-size: 2rem;
+      text-align: center;
       color: fuchsia;
-      font-size: 24px;
       text-shadow: 0 0 10px fuchsia;
-      z-index: 50;
+    }
+
+    .image-popup {
+      position: fixed;
+      animation: zoom 3s ease-out;
+      max-width: 80vw;
+      max-height: 80vh;
+      z-index: 999;
+      filter: drop-shadow(0 0 20px fuchsia);
+    }
+
+    @keyframes zoom {
+      from {
+        transform: scale(0.5);
+        opacity: 0;
+      }
+      to {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    @keyframes flash {
+      0% { background: black; }
+      50% { background: #290029; }
+      100% { background: black; }
     }
   </style>
 </head>
 <body>
 
-  <div id="startScreen">
-    <div id="startText">You are ready for OBEY?<br>Open your ears well!</div>
-    <button id="startBtn">*click*</button>
+  <!-- Schermata 1 -->
+  <div id="intro">
+    <div class="glow-text">You are ready for OBEY?<br>Open your ears well!</div>
+    <button class="click-button" onclick="showAuth()">*click*</button>
   </div>
 
-  <div id="inputScreen" style="display:none;">
-    <div class="center">
-      <div style="margin-bottom: 20px;">Type "<strong>I belong to Dahlia</strong>" to enter the cult</div>
-      <input type="text" id="inputBox" placeholder="Type here...">
-    </div>
+  <!-- Schermata 2 -->
+  <div id="auth" style="display:none;">
+    <div class="glow-text">Type: <strong>I belong to Dahlia</strong> to enter the cult</div>
+    <input id="codeInput" placeholder="Type here..." onkeydown="if(event.key==='Enter'){checkPhrase()}">
   </div>
 
-  <div id="contentArea" style="display:none;"></div>
+  <!-- Schermata 3 -->
+  <div id="main" style="display:none;"></div>
 
-  <audio id="audio" src="/static/audio/track.mp3"></audio>
+  <audio id="audio" src="/static/audio.mp3"></audio>
 
   <script>
-    const startBtn = document.getElementById("startBtn");
-    const startScreen = document.getElementById("startScreen");
-    const inputScreen = document.getElementById("inputScreen");
-    const inputBox = document.getElementById("inputBox");
-    const contentArea = document.getElementById("contentArea");
-    const audio = document.getElementById("audio");
-
-    let phrases = [
-      "Give in to Dahlia",
-      "You were made to obey",
-      "There is no escape now",
-      "Your mind is mine",
-      "Only Dahlia exists"
+    const phrases = [
+      "Obsession is peace.",
+      "Dahlia controls your every thought.",
+      "You were made to submit.",
+      "Don't resist. Obey.",
+      "Only Dahlia exists in your mind.",
+      "Obeying Dahlia feels so natural."
     ];
 
-    let images = [];
+    let imageList = [];
 
-    startBtn.addEventListener("click", () => {
-      startScreen.style.display = "none";
-      inputScreen.style.display = "flex";
-    });
+    function showAuth() {
+      document.getElementById('intro').style.display = 'none';
+      document.getElementById('auth').style.display = 'flex';
+    }
 
-    inputBox.addEventListener("input", () => {
-      if (inputBox.value.trim().toLowerCase() === "i belong to dahlia") {
-        inputScreen.style.display = "none";
-        contentArea.style.display = "block";
-        triggerEffects();
+    function checkPhrase() {
+      const val = document.getElementById('codeInput').value.trim().toLowerCase();
+      if (val === "i belong to dahlia") {
+        document.getElementById('auth').style.display = 'none';
+        document.getElementById('main').style.display = 'flex';
+        startObey();
       }
-    });
+    }
 
-    function triggerEffects() {
-      audio.play().catch(e => {});
-      fetch("/images")
+    function startObey() {
+      document.body.style.animation = 'flash 1s infinite';
+      const audio = document.getElementById("audio");
+      audio.play().catch(() => {});
+      fetch('/images')
         .then(res => res.json())
-        .then(imgs => {
-          images = imgs;
-          showImagesLoop();
-          showTextLoop();
+        .then(images => {
+          imageList = images;
+          setInterval(showRandomImage, 1800);
+          setInterval(showPhrase, 2500);
         });
       setTimeout(() => {
-        window.open("https://throne.com/dahliastar", "_blank");
+        window.location.href = 'https://throne.com/dahliastar';
       }, 90000);
     }
 
-    function showImagesLoop() {
-      setInterval(() => {
-        if (images.length === 0) return;
-        let img = document.createElement("img");
-        img.src = images[Math.floor(Math.random() * images.length)];
-        img.className = "popup-img";
-        img.style.top = Math.random() * 80 + "%";
-        img.style.left = Math.random() * 80 + "%";
-        document.body.appendChild(img);
-        setTimeout(() => img.remove(), 2000);
-      }, 1000); // tempo ravvicinato
+    function showRandomImage() {
+      if (imageList.length === 0) return;
+      const img = document.createElement('img');
+      img.src = imageList[Math.floor(Math.random() * imageList.length)];
+      img.className = 'image-popup';
+      img.style.top = Math.random() * 80 + '%';
+      img.style.left = Math.random() * 80 + '%';
+      document.body.appendChild(img);
+      setTimeout(() => img.remove(), 2500);
     }
 
-    function showTextLoop() {
-      setInterval(() => {
-        let phrase = document.createElement("div");
-        phrase.className = "hypno-text";
-        phrase.innerText = phrases[Math.floor(Math.random() * phrases.length)];
-        document.body.appendChild(phrase);
-        setTimeout(() => phrase.remove(), 1500);
-      }, 2000);
+    function showPhrase() {
+      const phrase = document.createElement('div');
+      phrase.className = 'phrase';
+      phrase.textContent = phrases[Math.floor(Math.random() * phrases.length)];
+      document.body.appendChild(phrase);
+      setTimeout(() => phrase.remove(), 2000);
     }
   </script>
 
