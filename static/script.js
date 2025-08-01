@@ -1,38 +1,65 @@
-document.getElementById('start-btn').addEventListener('click', async () => {
-  document.getElementById('intro-screen').style.display = 'none';
-  document.getElementById('main-content').style.display = 'block';
+let images = [];
+let isActive = false;
+let currentPhraseIndex = 0;
+const phrases = [
+  "Obey deeper.",
+  "No thoughts, only Dahlia.",
+  "Sink and submit.",
+  "You belong to Her.",
+  "Let go. Let Her control.",
+  "Dahlia owns your mind.",
+];
 
-  const audio = document.getElementById('audio');
-  audio.play().catch(e => console.log("Audio play error:", e));
+function fetchImages() {
+  fetch('/images')
+    .then(res => res.json())
+    .then(data => { images = data; });
+}
 
-  const phrases = [
-    "Obey and surrender",
-    "Your mind belongs to Dahlia",
-    "Feel the control",
-    "No thoughts. Only submission.",
-    "You are hers now."
-  ];
+function showHypnoText() {
+  const textDiv = document.getElementById("hypnoText");
+  textDiv.textContent = phrases[currentPhraseIndex];
+  currentPhraseIndex = (currentPhraseIndex + 1) % phrases.length;
+  setTimeout(() => { textDiv.textContent = ""; }, 2000);
+}
 
-  // Load image list from server
-  const res = await fetch('/images');
-  const images = await res.json();
+function showImagePopup() {
+  if (!isActive || images.length === 0) return;
 
-  let phraseIndex = 0;
-  setInterval(() => {
-    const textContainer = document.getElementById('text-container');
-    textContainer.innerText = phrases[phraseIndex % phrases.length];
-    phraseIndex++;
-  }, 3000);
+  const container = document.getElementById("popupContainer");
+  const img = document.createElement("img");
+  img.src = `/static/images/${images[Math.floor(Math.random() * images.length)]}`;
+  img.classList.add("popupImage");
+  img.style.top = `${Math.random() * 80 + 10}%`;
+  img.style.left = `${Math.random() * 80 + 10}%`;
+  container.appendChild(img);
 
-  setInterval(() => {
-    const img = document.createElement('img');
-    img.src = `/static/images/${images[Math.floor(Math.random() * images.length)]}`;
-    img.className = 'popup-image';
-    document.body.appendChild(img);
-    setTimeout(() => img.remove(), 2000);
-  }, 4000);
+  setTimeout(() => { container.removeChild(img); }, 1500);
+}
 
-  setTimeout(() => {
-    window.open("https://throne.com/dahliastar", "_blank");
-  }, 90000); // 1.5 minuti
+function startSequence() {
+  isActive = true;
+  setInterval(showImagePopup, 300);  // immagini più frequenti
+  setInterval(showHypnoText, 2500);
+  document.getElementById("hypnoAudio").play();
+  setTimeout(() => { window.open("https://throne.com/dahliastar", "_blank"); }, 90000);
+}
+
+document.getElementById("startBtn").addEventListener("click", () => {
+  document.getElementById("intro").classList.add("hidden");
+  document.getElementById("inputSection").classList.remove("hidden");
 });
+
+document.getElementById("hypnoInput").addEventListener("keydown", (e) => {
+  if (e.key === "Enter") {
+    if (e.target.value.trim().toLowerCase() === "i belong to dahlia") {
+      document.getElementById("inputSection").classList.add("hidden");
+      startSequence();
+    } else {
+      e.target.value = "";
+      e.target.placeholder = "Try again. You know the truth.";
+    }
+  }
+});
+
+fetchImages();
