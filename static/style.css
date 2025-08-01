@@ -1,63 +1,58 @@
 body {
-    margin: 0;
-    background: black;
-    overflow: hidden;
-    font-family: Arial, sans-serif;
+  background-color: black;
+  overflow: hidden;
+  margin: 0;
+  font-family: monospace;
 }
 
-#start-screen {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-    color: fuchsia;
-    text-align: center;
-}
-
-.neon-text {
-    font-size: 2rem;
-    color: fuchsia;
-    text-shadow: 0 0 10px fuchsia, 0 0 20px fuchsia;
+#overlay {
+  position: absolute;
+  top: 40%;
+  width: 100%;
+  text-align: center;
+  z-index: 10;
 }
 
 input, button {
-    margin-top: 20px;
-    padding: 10px;
-    font-size: 1.2rem;
-    border: none;
-    border-radius: 10px;
+  background: black;
+  border: 2px solid fuchsia;
+  color: fuchsia;
+  padding: 10px 20px;
+  font-size: 20px;
+  text-align: center;
+  box-shadow: 0 0 10px fuchsia;
+  outline: none;
 }
 
-#effect-screen {
-    position: relative;
-    width: 100vw;
-    height: 100vh;
-    animation: bgFlash 1s infinite alternate;
-}
-
-@keyframes bgFlash {
-    from { background-color: black; }
-    to { background-color: #2a002a; }
+#phrases {
+  position: absolute;
+  top: 10%;
+  width: 100%;
+  text-align: center;
+  color: fuchsia;
+  font-size: 28px;
+  font-weight: bold;
+  animation: pulse 1s infinite alternate;
+  z-index: 5;
 }
 
 img.popup {
-    position: absolute;
-    width: 200px;
-    animation: popupAnim 1s ease;
+  position: absolute;
+  max-width: 30vw;
+  max-height: 30vh;
+  animation: pop 0.5s ease, spin 4s linear infinite;
 }
 
-@keyframes popupAnim {
-    0% { transform: scale(0.2) rotate(0deg); opacity: 0; }
-    100% { transform: scale(1.2) rotate(15deg); opacity: 1; }
+@keyframes pulse {
+  0% { opacity: 0.3; }
+  100% { opacity: 1; }
 }
 
-#text-container {
-    position: absolute;
-    top: 50%;
-    width: 100%;
-    text-align: center;
-    font-size: 2rem;
-    color: fuchsia;
-    text-shadow: 0 0 10px fuchsia;
+@keyframes pop {
+  from { transform: scale(0); }
+  to { transform: scale(1); }
+}
+
+@keyframes spin {
+  100% { transform: rotate(360deg); }
 }
